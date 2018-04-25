@@ -9,10 +9,12 @@
 
                 <div class="card-body">
 
+                    @include('layouts/alerts')
+
 <p>
     <a href="{{ route('users.create') }}" class="btn btn-primary">Tambah User</a>
 </p>
-
+<div class="table-responsive">
 <table class="table table-bordered table-hover">
     <thead>
 
@@ -27,18 +29,23 @@
     <tbody>
         @foreach( $users as $orang )
         <tr>
-            <td>{{ $orang['id'] }}</td>
-            <td>{{ $orang['nama'] }}</td>
-            <td>{{ $orang['telefon'] }}</td>
-            <td>{{ $orang['email'] }}</td>
+            <td>{{ $bil++ }}</td>
+            <td>{{ $orang->nama }}</td>
+            <td>{{ $orang->telefon }}</td>
+            <td>{{ $orang->email }}</td>
             <td>
-                <a href="/users/{{ $orang['id'] }}/edit">Edit</a>
+                <a href="/users/{{ $orang->id }}/edit">Edit</a>
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
 
+Jumlah: {{ $users->count() }} dari {{ $users->total() }} Pengguna
+
+{{ $users->links() }}
+
+</div>
 </div>
 </div>
 </div>

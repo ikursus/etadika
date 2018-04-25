@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use DB;
 
 class UsersController extends Controller
 {
@@ -14,17 +15,28 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $title = '<h1 style="color: red">Senarai Users</h1>';
+        # Dapatkan SEMUA rekod dari table users
+        // $users = DB::table('users')->get();
+        # Dapatkan data dari column - column tertentu
+        // $users = DB::table('users')->select('id','nama','email','telefon')->get();
+        # Dapatkan data berdasarkan condition where
+        // $users = DB::table('users')
+        // ->where('role', '=', 'user')
+        // ->select('id','nama','email','telefon')
+        // ->get();
+        # Dapatkan data berdasarkan sorting
+        // $users = DB::table('users')
+        // ->orderBy('nama', 'asc')
+        // ->get();
+        # Dapatkan SEMUA data dan paginationkan dia
+        $users = DB::table('users')
+        ->orderBy('id', 'asc')
+        ->paginate(2);
 
-        $users = [
-            ['id' => 1, 'nama' => 'Ali Baba', 'telefon' => '0123456789', 'email' => 'ali@baba.com'],
-            ['id' => 2, 'nama' => 'Ahmad Albab', 'telefon' => '0123456789', 'email' => 'ahmad@albab.com'],
-            ['id' => 3, 'nama' => 'Siti Nurhaliza', 'telefon' => '0123456789', 'email' => 'ahmad@albab.com'],
-            ['id' => 4, 'nama' => 'Aiman Tino', 'telefon' => '0123456789', 'email' => 'ahmad@albab.com'],
-            ['id' => 5, 'nama' => 'Najib', 'telefon' => '0123456789', 'email' => 'ahmad@albab.com'],
-        ];
-
-        return view('users/template_index', compact('title', 'users'));
+        # Bilangan perkara
+        $bil = 1;
+        # Paparkan template index dari folder users dan sertakan sekali variables $users
+        return view('users/template_index', compact('users', 'bil'));
     }
 
     /**
@@ -34,6 +46,7 @@ class UsersController extends Controller
      */
     public function create()
     {
+        # Bagi respon papar template create user
         return view('users/template_create');
     }
 
@@ -45,7 +58,36 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        return Carbon::now();
+        #Buat validation
+        // $this->validate($request, [
+        //     'nama' => 'required|min:3',
+        //     'email' => 'required|email'
+        // ]);
+        # Code validation baru (> Laravel 5.5)
+        $request->validate([
+            'nama' => 'required|min:3',
+            'password' => 'required|min:3|confirmed',
+            'email' => 'required|email',
+            'role' => 'required|in:user,admin',
+            'telefon' => 'required'
+        ]);
+
+        # Dapatkan SEMUA data daripada borang users/template_create.blade.php
+        // $data = $request->all();
+        # Dapatkan 1 data sahaja daripada borang ~ nama
+        // $data = $request->input('nama');
+        # Dapatkan nama, email dan telefon sahaja
+
+        $data = $request->only('nama', 'email', 'telefon', 'role');
+        $data['password'] = bcrypt( $request->input('password') );
+
+        # Dapatkan SEMUA data KECUALI telefon, 'role'
+        // $data = $request->except('telefon', 'role');
+
+        #Simpan data ke dalam table users
+        DB::table('users')->insert($data);
+        # Beri respon redirect ke halaman senarai users dan sertakan session alert-success
+        return redirect()->route('users.index')->with('alert-success', 'Rekod berjaya ditambah!');
     }
 
     /**
@@ -82,7 +124,18 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        # Code validation baru (> Laravel 5.5)
+        $request->validate([
+            'nama' => 'required|min:3',
+            'password' => 'required|min:3|confirmed',
+            'email' => 'required|email',
+            'role' => 'required|in:user,admin',
+            'telefon' => 'required|regex:/^601\d{8,9}$/'
+        ]);
+
+        $data = $request->all();
+
+        return $data;
     }
 
     /**

@@ -10,15 +10,17 @@ Route::group([], function() {
 
     // Halaman dashboard admin
     Route::get('/dashboard', 'PagesController@dashboard')->name('pages.dashboard');
-
+    // Paparkan senarai users
     Route::get('/users', 'UsersController@index')->name('users.index');
+    // Paparkan borang tambah user
     Route::get('/users/add', 'UsersController@create')->name('users.create');
+    // Route untuk terima data daripada borang tambah user
     Route::post('/users/add', 'UsersController@store')->name('users.store');
+    // Paparkan borang edit user
     Route::get('/users/{id}/edit', 'UsersController@edit')->name('users.edit');
+    // Route terima data daripada borang edit user (update)
+    Route::patch('/users/{id}/edit', 'UsersController@update')->name('users.update');
 
-    # Halaman students
-    Route::get('/students', 'StudentsController@index')->name('students.index');
-    Route::get('/students/{id}/edit', 'StudentsController@edit')->name('students.edit');
 
     # Halaman permohonan
     Route::get('/permohonan', 'PermohonanController@index')->name('permohonan.index');
