@@ -22,9 +22,7 @@
             <th>BIL</th>
             <th>TARIKH PERMOHONAN</th>
             <th>NAMA PELAJAR</th>
-            <th>NO. KP</th>
-            <th>SIJIL LAHIR</th>
-            <th>TARIKH LAHIR</th>
+            <th>GAMBAR</th>
             <th>JANTINA</th>
             <th>STATUS</th>
             <th>TINDAKAN</th>
@@ -36,9 +34,13 @@
             <td>{{ $bil++ }}</td>
             <td>{{ $item->tarikh_permohonan }}</td>
             <td>{{ $item->nama_pelajar }}</td>
-            <td>{{ $item->no_kp }}</td>
-            <td>{{ $item->sijil_lahir }}</td>
-            <td>{{ $item->tarikh_lahir }}</td>
+            <td>
+                @if ( ! empty( $item->gambar ) )
+                <img src="{{ asset('uploads/'. $item->gambar) }}" class="img-responsive">
+                @else
+                Tiada Gambar
+                @endif
+            </td>
             <td>{{ $item->jantina }}</td>
             <td>{{ $item->status }}</td>
             <td>

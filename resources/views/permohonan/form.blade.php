@@ -110,7 +110,7 @@
         <label for="gambar" class="col-sm-4 col-form-label text-md-right">{{ __('Gambar') }}</label>
 
         <div class="col-md-6">
-            <input id="gambar" type="file" autofocus>
+            <input id="gambar" type="file" name="gambar" autofocus>
 
             @if ($errors->has('gambar'))
                 <span class="invalid-feedback">

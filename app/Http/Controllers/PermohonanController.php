@@ -48,10 +48,34 @@ class PermohonanController extends Controller
             'no_kp' => 'required'
         ]);
 
-        $data = $request->all();
+        $data = $request->except('gambar');
         $data['user_id'] = Auth::user()->id;
         $data['tarikh_permohonan'] = Carbon::now();
-        $data['status'] = 'pending';
+
+        # Upload gambar
+        if ( $request->hasFile('gambar') )
+        {
+            // Dapatkan file dari ruangan upload pada borang
+            $gambar = $request->file('gambar');
+            // Dapatkan nama gambar
+            $nama_gambar = $gambar->getClientOriginalName();
+            // Setkan nama baru gambar supaya tidak overwrite
+            $nama_baru = date('YmdHis') . '-' . $nama_gambar;
+            // Simpan file
+            $gambar->move('uploads', $nama_baru);
+            // Simpan nama fail baru ke table permohonan
+            $data['gambar'] = $nama_baru;
+        }
+
+        # Set status berdasarkan role admin
+        if ( Auth::user()->hasRole == 'admin' )
+        {
+            $data['status'] = $request->input('status');
+        }
+        else
+        {
+            $data['status'] = 'pending';
+        }
 
         Permohonan::create($data);
 
