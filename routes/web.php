@@ -8,6 +8,7 @@ Auth::routes();
 // Route::get('/home', function () {
 //     return redirect()->route('pages.dashboard');
 // });
+// Route::redirect('/home', '/dashboard');
 
 # Ruangan admin
     Route::group(['middleware' => 'auth'], function() {
@@ -30,7 +31,11 @@ Auth::routes();
 
     # Halaman permohonan
     Route::get('/permohonan', 'PermohonanController@index')->name('permohonan.index');
+    Route::get('/permohonan/add', 'PermohonanController@create')->name('permohonan.create');
+    Route::post('/permohonan/add', 'PermohonanController@store')->name('permohonan.store');
     Route::get('/permohonan/{id}/edit', 'PermohonanController@edit')->name('permohonan.edit');
+    Route::patch('/permohonan/{id}/edit', 'PermohonanController@update')->name('permohonan.update');
+    Route::delete('/permohonan/{id}', 'PermohonanController@destroy')->name('permohonan.destroy');
 
     # Maklumat Role
     Route::get('/roles', 'RolesController@index')->name('roles.index');

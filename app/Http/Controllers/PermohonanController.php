@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Permohonan;
+
 class PermohonanController extends Controller
 {
     /**
@@ -13,7 +15,11 @@ class PermohonanController extends Controller
      */
     public function index()
     {
-        return view('permohonan/template_index');
+        $data = Permohonan::all();
+        #$data = DB::table('permohonans')->get();
+        $bil = 1;
+
+        return view('permohonan/template_index', compact('data', 'bil'));
     }
 
     /**
@@ -23,7 +29,7 @@ class PermohonanController extends Controller
      */
     public function create()
     {
-        //
+        return view('permohonan/template_create');
     }
 
     /**
