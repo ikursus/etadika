@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('admin'),
             'telefon' => '0123456789',
-            'role' => 'admin'
+            'role' => '2'
         ]);
 
         # Sample Data User 2
@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'demo@gmail.com',
             'password' => bcrypt('demo'),
             'telefon' => '0123456789',
-            'role' => 'user'
+            'role' => '1'
         ]);
 
         # Sample Data User 3
@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'demo2@gmail.com',
             'password' => bcrypt('demo2'),
             'telefon' => '0123456789',
-            'role' => 'user'
+            'role' => '1'
         ]);
     }
 }

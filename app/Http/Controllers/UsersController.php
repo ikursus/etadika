@@ -30,7 +30,9 @@ class UsersController extends Controller
         // ->get();
         # Dapatkan SEMUA data dan paginationkan dia
         $users = DB::table('users')
-        ->orderBy('id', 'asc')
+        ->join('roles', 'users.role', '=', 'roles.id')
+        ->select('users.*', 'roles.name as nama_role')
+        ->orderBy('users.id', 'asc')
         ->paginate(2);
 
         # Bilangan perkara
@@ -46,8 +48,11 @@ class UsersController extends Controller
      */
     public function create()
     {
+        $user = null;
+        $roles = DB::table('roles')->select('name', 'id')->get();
+
         # Bagi respon papar template create user
-        return view('users/template_create');
+        return view('users/template_create', compact('user', 'roles'));
     }
 
     /**
@@ -68,7 +73,6 @@ class UsersController extends Controller
             'nama' => 'required|min:3',
             'password' => 'required|min:3|confirmed',
             'email' => 'required|email',
-            'role' => 'required|in:user,admin',
             'telefon' => 'required'
         ]);
 
@@ -109,10 +113,13 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $title = 'Halaman Edit';
-        // return view('users/template_edit', ['id' => $id]);
-        // return view('users/template_edit')->with('id', $id);
-        return view('users/template_edit', compact('id', 'title'));
+        $user = DB::table('users')
+        ->where('id', '=', $id)
+        ->first();
+        # Dapatkan data dari table roles
+        $roles = DB::table('roles')->select('name', 'id')->get();
+
+        return view('users/template_edit', compact('user', 'roles'));
     }
 
     /**
@@ -127,15 +134,21 @@ class UsersController extends Controller
         # Code validation baru (> Laravel 5.5)
         $request->validate([
             'nama' => 'required|min:3',
-            'password' => 'required|min:3|confirmed',
-            'email' => 'required|email',
-            'role' => 'required|in:user,admin',
-            'telefon' => 'required|regex:/^601\d{8,9}$/'
+            'password' => 'confirmed',
+            'email' => 'required|email'
         ]);
 
-        $data = $request->all();
+        $data = $request->only('nama', 'email', 'telefon', 'role');
+        # Semak jika password tidak kosong
 
-        return $data;
+        if ( ! empty ( $request->input('password') ) AND ! is_null( $request->input('password') ) )
+        {
+            $data['password'] = bcrypt( $request->input('password') );
+        }
+
+        $user = DB::table('users')->where('id', '=', $id)->update($data);
+
+        return redirect()->route('users.index')->with('alert-success', 'Data berjaya dikemaskini!');
     }
 
     /**
@@ -146,6 +159,11 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = DB::table('users')->where('id', '=', $id)->delete();
+
+        return redirect()->route('users.index')->with('alert-success', 'Data berjaya dihapuskan!');
     }
+
+
+    
 }

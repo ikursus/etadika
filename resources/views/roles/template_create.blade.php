@@ -5,13 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Edit User: {{ $user->nama }}</div>
+                <div class="card-header">Tambah Role</div>
 
                 <div class="card-body">
                     @include('layouts/alerts')
-                    <form method="POST" action="{{ route('users.update', ['id' => $user->id]) }}">
-                        <input type="hidden" name="_method" value="PATCH">
-                        @include('users/form')
+                    <form method="POST" action="{{ route('roles.store') }}">
+                    @include('roles/form')
                     </form>
 
                 </div>

@@ -6,7 +6,7 @@
         <label for="nama" class="col-sm-4 col-form-label text-md-right">{{ __('Nama') }}</label>
 
         <div class="col-md-6">
-            <input id="nama" type="text" class="form-control{{ $errors->has('nama') ? ' is-invalid' : '' }}" name="nama" value="{{ old('nama') }}"  autofocus>
+            <input id="nama" type="text" class="form-control{{ $errors->has('nama') ? ' is-invalid' : '' }}" name="nama" value="{{ count( $user ) ? $user->nama : old('nama') }}"  autofocus>
 
             @if ($errors->has('nama'))
                 <span class="invalid-feedback">
@@ -20,7 +20,7 @@
         <label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
         <div class="col-md-6">
-            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}"  autofocus>
+            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ count( $user ) ? $user->email : old('email') }}"  autofocus>
 
             @if ($errors->has('email'))
                 <span class="invalid-feedback">
@@ -56,7 +56,7 @@
         <label for="telefon" class="col-sm-4 col-form-label text-md-right">{{ __('Telefon') }}</label>
 
         <div class="col-md-6">
-            <input id="telefon" type="text" class="form-control{{ $errors->has('telefon') ? ' is-invalid' : '' }}" name="telefon" value="{{ old('telefon') }}"  autofocus>
+            <input id="telefon" type="text" class="form-control{{ $errors->has('telefon') ? ' is-invalid' : '' }}" name="telefon" value="{{ count( $user ) ? $user->telefon : old('telefon') }}"  autofocus>
 
             @if ($errors->has('telefon'))
                 <span class="invalid-feedback">
@@ -70,10 +70,20 @@
         <label for="role" class="col-sm-4 col-form-label text-md-right">{{ __('Role') }}</label>
 
         <div class="col-md-6">
+
+            @if ( count( $user ) )
             <select name="role" class="form-control{{ $errors->has('role') ? ' is-invalid' : '' }}">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
+                @foreach ($roles as $item )
+                <option value="{{ $item->id }}" {{ $user->role == $item->id ? 'selected=selected' : '' }}>{{ ucwords( $item->name ) }}</option>
+                @endforeach
             </select>
+            @else
+            <select name="role" class="form-control{{ $errors->has('role') ? ' is-invalid' : '' }}">
+                @foreach ($roles as $item )
+                <option value="{{ $item->id }}">{{ ucwords( $item->name ) }}</option>
+                @endforeach
+            </select>
+            @endif
 
             @if ($errors->has('role'))
                 <span class="invalid-feedback">
