@@ -47,6 +47,14 @@
                             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
 
                         @else
+
+                            @if( Auth::user()->role == 'admin' )
+
+                            @elseif ( Auth::user()->role == 'staff' )
+
+                            @else
+                            
+                            @endif
                             <li><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
                             <li><a class="nav-link" href="{{ route('roles.index') }}">Roles</a></li>
                             <li><a class="nav-link" href="{{ route('permohonan.index') }}">Permohonan</a></li>

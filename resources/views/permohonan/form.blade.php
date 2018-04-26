@@ -120,7 +120,7 @@
         </div>
     </div>
 
-    @if ( $user->role == '2' )
+    @if ( $user->hasRole->name == 'admin' )
     <div class="form-group row">
         <label for="status" class="col-sm-4 col-form-label text-md-right">{{ __('Status') }}</label>
 
