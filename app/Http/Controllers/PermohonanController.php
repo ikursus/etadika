@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Auth;
 use App\Models\Permohonan;
+use Carbon\Carbon;
 
 class PermohonanController extends Controller
 {
@@ -29,7 +30,9 @@ class PermohonanController extends Controller
      */
     public function create()
     {
-        return view('permohonan/template_create');
+        $user = Auth::user();
+
+        return view('permohonan/template_create', compact('user'));
     }
 
     /**
@@ -40,7 +43,20 @@ class PermohonanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_pelajar' => 'required',
+            'no_kp' => 'required'
+        ]);
+
+        $data = $request->all();
+        $data['user_id'] = Auth::user()->id;
+        $data['tarikh_permohonan'] = Carbon::now();
+        $data['status'] = 'pending';
+
+        Permohonan::create($data);
+
+        return redirect()->route('permohonan.index')->with('alert-success', 'Permohonan berjaya dikirimkan!');
+
     }
 
     /**
@@ -62,7 +78,11 @@ class PermohonanController extends Controller
      */
     public function edit($id)
     {
-        return view('permohonan/template_edit');
+        $user = Auth::user();
+
+        $data = Permohonan::find($id);
+
+        return view('permohonan/template_edit', compact('data', 'user'));
     }
 
     /**
@@ -74,7 +94,17 @@ class PermohonanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_pelajar' => 'required',
+            'no_kp' => 'required'
+        ]);
+
+        $data = $request->all();
+
+        $query = Permohonan::find($id);
+        $query->update($data);
+
+        return redirect()->route('permohonan.index')->with('alert-success', 'Permohonan berjaya dikemaskini!');
     }
 
     /**
@@ -85,6 +115,9 @@ class PermohonanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $query = Permohonan::find($id);
+        $query->delete();
+
+        return redirect()->route('permohonan.index')->with('alert-success', 'Permohonan berjaya dihapuskan!');
     }
 }

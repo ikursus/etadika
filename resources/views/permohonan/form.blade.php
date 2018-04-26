@@ -120,6 +120,27 @@
         </div>
     </div>
 
+    @if ( $user->role == '2' )
+    <div class="form-group row">
+        <label for="status" class="col-sm-4 col-form-label text-md-right">{{ __('Status') }}</label>
+
+        <div class="col-md-6">
+
+            <select name="status" class="form-control">
+                <option value="pending">Pending</option>
+                <option value="approve">Approve</option>
+                <option value="reject">Reject</option>
+            </select>
+
+            @if ($errors->has('status'))
+                <span class="invalid-feedback">
+                    <strong>{{ $errors->first('status') }}</strong>
+                </span>
+            @endif
+        </div>
+    </div>
+    @endif
+
     <div class="form-group row mb-0">
         <div class="col-md-8 offset-md-4">
             <button type="submit" class="btn btn-primary">
