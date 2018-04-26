@@ -18,7 +18,7 @@ class PagesController extends Controller
 
     public function dashboard() {
         # Beri respon papar template dashboard dari folder administrator
-        return view('administrator/template_dashboard');
+        return view('themes/' . env('APP_THEME') . '/administrator/dashboard');
     }
 
     /**
