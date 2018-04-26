@@ -5,6 +5,10 @@ Route::get('/', 'PagesController@homepage')->name('pages.homepage');
 # Route Authentication
 Auth::routes();
 
+// Route::get('/home', function () {
+//     return redirect()->route('pages.dashboard');
+// });
+
 # Ruangan admin
     Route::group(['middleware' => 'auth'], function() {
 
