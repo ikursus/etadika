@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\Permohonan;
 use Carbon\Carbon;
+use Mail;
+use App\Mail\PermohonanBaru;
 
 class PermohonanController extends Controller
 {
@@ -78,6 +80,11 @@ class PermohonanController extends Controller
         }
 
         Permohonan::create($data);
+
+        # Hantar email
+        Mail::to(Auth::user()->email)
+        //->cc()
+        ->send(new PermohonanBaru);
 
         return redirect()->route('permohonan.index')->with('alert-success', 'Permohonan berjaya dikirimkan!');
 

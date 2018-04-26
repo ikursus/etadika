@@ -5,14 +5,15 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Edit User: {{ $user->nama }}</div>
+                <div class="card-header">Edit Role: {{ $role->name }}</div>
 
                 <div class="card-body">
                     @include('layouts/alerts')
-                    <form method="POST" action="{{ route('users.update', ['id' => $user->id]) }}">
-                        <input type="hidden" name="_method" value="PATCH">
-                        @include('users/form')
-                    </form>
+                    {!! Form::model($role, ['method' => 'PATCH', 'route' => ['roles.update', $role->id]]) !!}
+
+                        @include('roles/form')
+                        
+                    {!! Form::close() !!}
 
                 </div>
             </div>

@@ -39,6 +39,7 @@ Auth::routes();
 
     # Maklumat Role
     Route::get('/roles', 'RolesController@index')->name('roles.index');
+    Route::get('/roles/datatables', 'RolesController@datatables')->name('roles.datatables');
     Route::get('/roles/add', 'RolesController@create')->name('roles.create');
     Route::post('/roles/add', 'RolesController@store')->name('roles.store');
     Route::get('/roles/{id}/edit', 'RolesController@edit')->name('roles.edit');

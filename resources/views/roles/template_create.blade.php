@@ -9,9 +9,12 @@
 
                 <div class="card-body">
                     @include('layouts/alerts')
-                    <form method="POST" action="{{ route('roles.store') }}">
+                    
+                    {!! Form::open(['method' => 'POST', 'route' => 'roles.store' ]) !!}
+
                     @include('roles/form')
-                    </form>
+
+                    {!! Form::close() !!}
 
                 </div>
             </div>

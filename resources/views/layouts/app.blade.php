@@ -12,7 +12,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -20,6 +20,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('header')
 </head>
 <body>
     <div id="app">
@@ -53,7 +54,7 @@
                             @elseif ( Auth::user()->role == 'staff' )
 
                             @else
-                            
+
                             @endif
                             <li><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
                             <li><a class="nav-link" href="{{ route('roles.index') }}">Roles</a></li>

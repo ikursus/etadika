@@ -1,5 +1,9 @@
 @extends('layouts/app')
 
+@section('header')
+<link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -15,26 +19,16 @@
     <a href="{{ route('roles.create') }}" class="btn btn-primary">Tambah Role</a>
 </p>
 <div class="table-responsive">
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" id="roles-table">
     <thead>
 
         <tr>
-            <th>BIL</th>
+            <th>ID</th>
             <th>ROLE</th>
             <th>TINDAKAN</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach( $roles as $item )
-        <tr>
-            <td>{{ $item->id }}</td>
-            <td>{{ $item->name }}</td>
-            <td>
-                <a href="/roles/{{ $item->id }}/edit" class="btn btn-info btn-sm">Edit</a>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
+
 </table>
 
 </div>
@@ -46,5 +40,21 @@
 @endsection
 
 @section('script')
+<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
+<script>
+$(function() {
+    $('#roles-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! route('roles.datatables') !!}',
+        columns: [
+            { data: 'id', name: 'id' },
+            { data: 'name', name: 'name' },
+            { data: 'tindakan', name: 'tindakan', orderable: false, searchable: false }
+        ]
+    });
+});
+</script>
 @endsection

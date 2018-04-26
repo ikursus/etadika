@@ -1,5 +1,9 @@
 @extends('layouts/app')
 
+@section('header')
+<link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -95,5 +99,5 @@
 @endsection
 
 @section('script')
-
+<script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 @endsection
